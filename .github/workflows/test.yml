@@ -1,0 +1,41 @@
+name: LSP position and edit acceptance
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  test:
+    name: Python ${{ matrix.python }} / Linux
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ['3.12.14', '3.13.5']
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Record runtime and exact source
+        run: |
+          python --version
+          git rev-parse HEAD
+      - run: python -B -m unittest -v
+      - name: Verify positive and negative CLI controls
+        shell: bash
+        run: |
+          python -B kit.py > "$RUNNER_TEMP/correct.json"
+          for adapter in wrong-units stale-changes serial-batch; do
+            set +e
+            python -B kit.py --adapter "$adapter" > "$RUNNER_TEMP/$adapter.json"
+            status=$?
+            set -e
+            test "$status" -eq 1
+          done
+          python -c 'import json,sys; assert json.load(open(sys.argv[1]))["status"] == "passed"' "$RUNNER_TEMP/correct.json"
+      - run: git diff --exit-code
