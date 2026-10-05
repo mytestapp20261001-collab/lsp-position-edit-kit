@@ -1,0 +1,413 @@
+{
+  "schema_version": 1,
+  "cases": [
+    {
+      "id": "ascii-default",
+      "kind": "didChange",
+      "initial": "alpha beta\n",
+      "edits": [
+        {
+          "source": "alpha beta\n",
+          "byte_span": [
+            6,
+            10
+          ],
+          "expected_range": {
+            "start": {
+              "line": 0,
+              "character": 6
+            },
+            "end": {
+              "line": 0,
+              "character": 10
+            }
+          },
+          "replacement": "B"
+        }
+      ],
+      "expected_text": "alpha B\n"
+    },
+    {
+      "id": "cjk-utf8",
+      "kind": "didChange",
+      "initial": "\u53d8\u91cf = name\n",
+      "edits": [
+        {
+          "source": "\u53d8\u91cf = name\n",
+          "byte_span": [
+            9,
+            13
+          ],
+          "expected_range": {
+            "start": {
+              "line": 0,
+              "character": 9
+            },
+            "end": {
+              "line": 0,
+              "character": 13
+            }
+          },
+          "replacement": "id"
+        }
+      ],
+      "expected_text": "\u53d8\u91cf = id\n",
+      "client_position_encodings": [
+        "utf-8"
+      ],
+      "server_position_encoding": "utf-8"
+    },
+    {
+      "id": "cjk-utf16",
+      "kind": "didChange",
+      "initial": "\u53d8\u91cf = name\n",
+      "edits": [
+        {
+          "source": "\u53d8\u91cf = name\n",
+          "byte_span": [
+            9,
+            13
+          ],
+          "expected_range": {
+            "start": {
+              "line": 0,
+              "character": 5
+            },
+            "end": {
+              "line": 0,
+              "character": 9
+            }
+          },
+          "replacement": "id"
+        }
+      ],
+      "expected_text": "\u53d8\u91cf = id\n"
+    },
+    {
+      "id": "astral-utf-8",
+      "kind": "didChange",
+      "initial": "\ud83d\ude00 target tail",
+      "edits": [
+        {
+          "source": "\ud83d\ude00 target tail",
+          "byte_span": [
+            5,
+            11
+          ],
+          "expected_range": {
+            "start": {
+              "line": 0,
+              "character": 5
+            },
+            "end": {
+              "line": 0,
+              "character": 11
+            }
+          },
+          "replacement": "ok"
+        }
+      ],
+      "expected_text": "\ud83d\ude00 ok tail",
+      "client_position_encodings": [
+        "utf-8"
+      ],
+      "server_position_encoding": "utf-8"
+    },
+    {
+      "id": "astral-utf-16",
+      "kind": "didChange",
+      "initial": "\ud83d\ude00 target tail",
+      "edits": [
+        {
+          "source": "\ud83d\ude00 target tail",
+          "byte_span": [
+            5,
+            11
+          ],
+          "expected_range": {
+            "start": {
+              "line": 0,
+              "character": 3
+            },
+            "end": {
+              "line": 0,
+              "character": 9
+            }
+          },
+          "replacement": "ok"
+        }
+      ],
+      "expected_text": "\ud83d\ude00 ok tail",
+      "client_position_encodings": [
+        "utf-16"
+      ],
+      "server_position_encoding": "utf-16"
+    },
+    {
+      "id": "astral-utf-32",
+      "kind": "didChange",
+      "initial": "\ud83d\ude00 target tail",
+      "edits": [
+        {
+          "source": "\ud83d\ude00 target tail",
+          "byte_span": [
+            5,
+            11
+          ],
+          "expected_range": {
+            "start": {
+              "line": 0,
+              "character": 2
+            },
+            "end": {
+              "line": 0,
+              "character": 8
+            }
+          },
+          "replacement": "ok"
+        }
+      ],
+      "expected_text": "\ud83d\ude00 ok tail",
+      "client_position_encodings": [
+        "utf-32"
+      ],
+      "server_position_encoding": "utf-32"
+    },
+    {
+      "id": "combining-not-grapheme",
+      "kind": "didChange",
+      "initial": "e\u0301 target",
+      "edits": [
+        {
+          "source": "e\u0301 target",
+          "byte_span": [
+            4,
+            10
+          ],
+          "expected_range": {
+            "start": {
+              "line": 0,
+              "character": 3
+            },
+            "end": {
+              "line": 0,
+              "character": 9
+            }
+          },
+          "replacement": "ok"
+        }
+      ],
+      "expected_text": "e\u0301 ok"
+    },
+    {
+      "id": "zwj-not-grapheme",
+      "kind": "didChange",
+      "initial": "\ud83d\udc69\u200d\ud83d\udcbb target",
+      "edits": [
+        {
+          "source": "\ud83d\udc69\u200d\ud83d\udcbb target",
+          "byte_span": [
+            12,
+            18
+          ],
+          "expected_range": {
+            "start": {
+              "line": 0,
+              "character": 6
+            },
+            "end": {
+              "line": 0,
+              "character": 12
+            }
+          },
+          "replacement": "ok"
+        }
+      ],
+      "expected_text": "\ud83d\udc69\u200d\ud83d\udcbb ok"
+    },
+    {
+      "id": "crlf-next-line",
+      "kind": "didChange",
+      "initial": "\ud83d\ude00\r\nname = 1\r\n",
+      "edits": [
+        {
+          "source": "\ud83d\ude00\r\nname = 1\r\n",
+          "byte_span": [
+            6,
+            10
+          ],
+          "expected_range": {
+            "start": {
+              "line": 1,
+              "character": 0
+            },
+            "end": {
+              "line": 1,
+              "character": 4
+            }
+          },
+          "replacement": "id"
+        }
+      ],
+      "expected_text": "\ud83d\ude00\r\nid = 1\r\n"
+    },
+    {
+      "id": "remove-crlf",
+      "kind": "didChange",
+      "initial": "\ud83d\ude00\r\nname",
+      "edits": [
+        {
+          "source": "\ud83d\ude00\r\nname",
+          "byte_span": [
+            4,
+            6
+          ],
+          "expected_range": {
+            "start": {
+              "line": 0,
+              "character": 2
+            },
+            "end": {
+              "line": 1,
+              "character": 0
+            }
+          },
+          "replacement": ""
+        }
+      ],
+      "expected_text": "\ud83d\ude00name"
+    },
+    {
+      "id": "trailing-empty-line",
+      "kind": "didChange",
+      "initial": "a\r\n",
+      "edits": [
+        {
+          "source": "a\r\n",
+          "byte_span": [
+            3,
+            3
+          ],
+          "expected_range": {
+            "start": {
+              "line": 1,
+              "character": 0
+            },
+            "end": {
+              "line": 1,
+              "character": 0
+            }
+          },
+          "replacement": "end"
+        }
+      ],
+      "expected_text": "a\r\nend"
+    },
+    {
+      "id": "sequential-shifting-snapshot",
+      "kind": "didChange",
+      "initial": "\ud83d\ude00 x y\n",
+      "edits": [
+        {
+          "source": "\ud83d\ude00 x y\n",
+          "byte_span": [
+            0,
+            0
+          ],
+          "expected_range": {
+            "start": {
+              "line": 0,
+              "character": 0
+            },
+            "end": {
+              "line": 0,
+              "character": 0
+            }
+          },
+          "replacement": "prefix "
+        },
+        {
+          "source": "prefix \ud83d\ude00 x y\n",
+          "byte_span": [
+            12,
+            13
+          ],
+          "expected_range": {
+            "start": {
+              "line": 0,
+              "character": 10
+            },
+            "end": {
+              "line": 0,
+              "character": 11
+            }
+          },
+          "replacement": "renamed"
+        },
+        {
+          "source": "prefix \ud83d\ude00 renamed y\n",
+          "byte_span": [
+            20,
+            21
+          ],
+          "expected_range": {
+            "start": {
+              "line": 0,
+              "character": 18
+            },
+            "end": {
+              "line": 0,
+              "character": 19
+            }
+          },
+          "replacement": "end"
+        }
+      ],
+      "expected_text": "prefix \ud83d\ude00 renamed end\n"
+    },
+    {
+      "id": "simultaneous-original-snapshot",
+      "kind": "TextEdit",
+      "initial": "\ud83d\ude00 aa bb\n",
+      "edits": [
+        {
+          "source": "\ud83d\ude00 aa bb\n",
+          "byte_span": [
+            5,
+            7
+          ],
+          "expected_range": {
+            "start": {
+              "line": 0,
+              "character": 3
+            },
+            "end": {
+              "line": 0,
+              "character": 5
+            }
+          },
+          "replacement": "longer"
+        },
+        {
+          "source": "\ud83d\ude00 aa bb\n",
+          "byte_span": [
+            8,
+            10
+          ],
+          "expected_range": {
+            "start": {
+              "line": 0,
+              "character": 6
+            },
+            "end": {
+              "line": 0,
+              "character": 8
+            }
+          },
+          "replacement": "B"
+        }
+      ],
+      "expected_text": "\ud83d\ude00 longer B\n"
+    }
+  ]
+}
